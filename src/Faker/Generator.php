@@ -618,10 +618,10 @@ class Generator
      * $faker->unique()->randomElement(array(1, 2, 3));
      * </code>
      *
-     * @param bool $reset      If set to true, resets the list of existing values
-     * @param int  $maxRetries Maximum number of retries to find a unique value,
-     *                         After which an OverflowException is thrown.
-     * @param string  $key Unique identifier to allow multiple independent UniqueGenerator instances
+     * @param bool   $reset      If set to true, resets the list of existing values
+     * @param int    $maxRetries Maximum number of retries to find a unique value,
+     *                           After which an OverflowException is thrown.
+     * @param string $key        Unique identifier to allow multiple independent UniqueGenerator instances
      *
      * @throws \OverflowException When no unique value can be found by iterating $maxRetries times
      *
@@ -629,7 +629,7 @@ class Generator
      */
     public function unique($reset = false, $maxRetries = 10000, $key = 'default')
     {
-        if ($reset || ! array_key_exists($key, $this->uniqueGenerators)) {
+        if ($reset || !array_key_exists($key, $this->uniqueGenerators)) {
             $this->uniqueGenerators[$key] = new UniqueGenerator($this, $maxRetries);
         }
 
