@@ -561,9 +561,9 @@ class Generator
     private $container;
 
     /**
-     * @var UniqueGenerator
+     * @var array<UniqueGenerator>
      */
-    private $uniqueGenerator;
+    private $uniqueGenerators = [];
 
     public function __construct(ContainerInterface $container = null)
     {
@@ -621,18 +621,19 @@ class Generator
      * @param bool $reset      If set to true, resets the list of existing values
      * @param int  $maxRetries Maximum number of retries to find a unique value,
      *                         After which an OverflowException is thrown.
+     * @param string  $key Unique identifier to allow multiple independent UniqueGenerator instances
      *
      * @throws \OverflowException When no unique value can be found by iterating $maxRetries times
      *
      * @return self A proxy class returning only non-existing values
      */
-    public function unique($reset = false, $maxRetries = 10000)
+    public function unique($reset = false, $maxRetries = 10000, $key = 'default')
     {
-        if ($reset || $this->uniqueGenerator === null) {
-            $this->uniqueGenerator = new UniqueGenerator($this, $maxRetries);
+        if ($reset || ! array_key_exists($key, $this->uniqueGenerators)) {
+            $this->uniqueGenerators[$key] = new UniqueGenerator($this, $maxRetries);
         }
 
-        return $this->uniqueGenerator;
+        return $this->uniqueGenerators[$key];
     }
 
     /**
